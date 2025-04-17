@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV Evolution | Market Analysis Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0053b3;
+            --secondary: #00a3e0;
+            --light: #e6f2ff;
+            --dark: #001d42;
+            --accent: #00c6ff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav li {
+            margin-left: 2rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--light);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0, 29, 66, 0.8), rgba(0, 29, 66, 0.8)), url('https://images.unsplash.com/photo-1591134106085-8bbdc61a2ab5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            height: 100vh;
+            color: white;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(0, 198, 255, 0.2) 0%, transparent 20%),
+                radial-gradient(circle at 80% 60%, rgba(0, 83, 179, 0.2) 0%, transparent 25%),
+                radial-gradient(circle at 40% 80%, rgba(0, 163, 224, 0.2) 0%, transparent 30%);
+            animation: pulse 15s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: white;
+            color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .section {
+            padding: 5rem 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--secondary);
+        }
+        
+        .key-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .stat-card i {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        
+        .stat-card h3 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .trends {
+            background-color: var(--dark);
+            color: white;
+        }
+        
+        .trends .section-title h2 {
+            color: white;
+        }
+        
+        .trend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .trend-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 2rem;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .trend-item h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .why-ev {
+            background-color: white;
+        }
+        
+        .reasons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .reason-card {
+            padding: 2rem;
+            border-radius: 10px;
+            background: var(--light);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .reason-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .reason-card i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+        
+        .dashboard {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+        }
+        
+        .dashboard-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .dashboard-preview {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+            border: 3px solid var(--accent);
+        }
+        
+        .dashboard-instruction {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: left;
+        }
+        
+        .dashboard-instruction h3 {
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+        
+        .dashboard-instruction ol {
+            margin-left: 20px;
+        }
+        
+        .dashboard-instruction li {
+            margin-bottom: 10px;
+        }
+        
+        .code-block {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: monospace;
+            color: #f0f0f0;
+        }
+        
+        footer {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .social-icons {
+            margin: 1rem 0;
+        }
+        
+        .social-icons a {
+            color: white;
+            margin: 0 10px;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            color: var(--secondary);
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                background: var(--primary);
+                width: 200px;
+                padding: 1rem;
+                display: none;
+            }
+            
+            nav ul.show {
+                display: block;
+            }
+            
+            nav li {
+                margin: 1rem 0;
+            }
+            
+            .mobile-toggle {
+                display: block;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-charging-station"></i>
+                <span>EV Evolution</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#key-findings">Key Findings</a></li>
+                    <li><a href="#trends">Trends</a></li>
+                    <li><a href="#why-ev">Why EVs</a></li>
+                    <li><a href="#dashboard">Dashboard</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Electric Vehicle Revolution</h1>
+            <p>Discover the latest trends and insights in the rapidly evolving electric vehicle market. Our comprehensive analysis tracks growth patterns, adoption rates, and key performance indicators across the industry.</p>
+            <a href="#dashboard" class="btn">View Dashboard</a>
+        </div>
+    </section>
+
+    <section class="section" id="key-findings">
+        <div class="container">
+            <div class="section-title">
+                <h2>Key Findings</h2>
+            </div>
+            <div class="key-stats">
+                <div class="stat-card">
+                    <i class="fas fa-car"></i>
+                    <h3>150.42K</h3>
+                    <p>Total Electric Vehicles</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-battery-full"></i>
+                    <h3>117K</h3>
+                    <p>Battery Electric Vehicles (78%)</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-plug"></i>
+                    <h3>34K</h3>
+                    <p>Plug-in Hybrid Vehicles (22%)</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-route"></i>
+                    <h3>67.83</h3>
+                    <p>Average EV Range (miles)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section trends" id="trends">
+        <div class="container">
+            <div class="section-title">
+                <h2>EV Evolution Trends</h2>
+            </div>
+            <div class="trend-grid">
+                <div class="trend-item">
+                    <h3>Exponential Growth</h3>
+                    <p>Electric vehicle adoption has seen remarkable growth, with a massive spike to 37K vehicles in 2022 compared to just 1K in 2010. This represents a 3600% increase over the 12-year period.</p>
+                </div>
+                <div class="trend-item">
+                    <h3>Tesla Dominance</h3>
+                    <p>Tesla leads the market with 69K vehicles, representing nearly half of all EVs tracked. The Model Y and Model 3 are particularly popular models in the electric vehicle landscape.</p>
+                </div>
+                <div class="trend-item">
+                    <h3>Clean Energy Incentives</h3>
+                    <p>Over 46% of vehicles qualify for Clean Air Future Vehicle incentives, indicating strong government support for emission-free transportation solutions.</p>
+                </div>
+                <div class="trend-item">
+                    <h3>Geographic Distribution</h3>
+                    <p>EV adoption varies significantly by state, with coastal regions showing stronger uptake. The map reveals patterns suggesting urban centers lead in adoption rates.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section why-ev" id="why-ev">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Focus on EV Adoption?</h2>
+            </div>
+            <div class="reasons">
+                <div class="reason-card">
+                    <h3><i class="fas fa-leaf"></i> Environmental Impact</h3>
+                    <p>Electric vehicles significantly reduce carbon emissions and air pollution. As our analysis shows, the 150K+ EVs tracked represent a substantial positive environmental impact compared to conventional vehicles.</p>
+                </div>
+                <div class="reason-card">
+                    <h3><i class="fas fa-chart-line"></i> Market Transformation</h3>
+                    <p>The data reveals a transformative shift in the automotive industry. With 78% pure battery electric vehicles, we're witnessing a fundamental change in transportation technology.</p>
+                </div>
+                <div class="reason-card">
+                    <h3><i class="fas fa-dollar-sign"></i> Economic Implications</h3>
+                    <p>EV adoption creates new economic opportunities while transforming existing industries. The distribution of manufacturers in our data highlights emerging market leaders and investment trends.</p>
+                </div>
+                <div class="reason-card">
+                    <h3><i class="fas fa-map-marked-alt"></i> Policy Effectiveness</h3>
+                    <p>Our state-by-state analysis helps evaluate the effectiveness of different incentive programs and infrastructure investments in driving EV adoption.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section dashboard" id="dashboard">
+        <div class="container">
+          <div class="section-title">
+            <h2>Interactive Dashboard</h2>
+          </div>
+          <div class="dashboard-container" style="text-align: center;">
+            <img 
+              src="https://raw.githubusercontent.com/parimal1009/AI_Lab/main/Screenshot%202025-04-17%20204327.png" 
+              alt="EV Dashboard Preview" 
+              class="dashboard-preview" 
+              style="max-width: 100%; height: auto; border-radius: 10px;"
+            >
+            <div style="margin-top: 20px;">
+              <a 
+                href="https://app.powerbi.com/groups/me/reports/c91a170c-3c80-46a8-b129-fc48d6a58435/ReportSection?experience=power-bi" 
+                class="btn" 
+                target="_blank"
+              >
+                Open Power BI Dashboard
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+
+    <footer>
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-charging-station"></i>
+                <span>EV Evolution</span>
+            </div>
+            <p>Comprehensive analysis of electric vehicle adoption trends and market insights.</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p>&copy; 2025 EV Evolution. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
